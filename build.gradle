@@ -1,0 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath files(
+            'semlangLib/antlr-parser.jar',
+            'semlangLib/kotlin-api.jar',
+            'semlangLib/kotlin-parser.jar',
+        )
+        classpath "org.antlr:antlr4:4.5"
+    }
+}

@@ -1,0 +1,9 @@
+
+
+function delimitCsvStyle(strings: List<Unicode.String>): Unicode.String {
+  Unicode.String.""
+}
+
+function undelimitCsvStyle(delimited: Unicode.String): List<Unicode.String> {
+  []<Unicode.String>
+}

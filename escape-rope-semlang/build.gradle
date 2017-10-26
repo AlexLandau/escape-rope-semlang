@@ -1,0 +1,17 @@
+import net.semlang.parser.ParserKt
+import net.semlang.parser.ValidatorKt
+import net.semlang.api.ModuleId
+
+task validate {
+    doLast {
+        System.out.println("About to run the parser")
+        def files = files('src/main/sem1/delimiters.sem').asList()
+        def context = ParserKt.parseFiles(files)
+        System.out.println("About to run the validator")
+        def moduleId = new ModuleId("net.alloyggp", "escape-rope", "0")
+        def nativeModuleVersion = "0"
+        def upstreamModules = []
+        ValidatorKt.validateModule(context, moduleId, nativeModuleVersion, upstreamModules)
+        System.out.println("Finished running the validator")
+    }
+}
