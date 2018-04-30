@@ -1,2 +1,4 @@
 /.gradle/
 /semlangLib/*.jar
+/.idea/
+/*.iml

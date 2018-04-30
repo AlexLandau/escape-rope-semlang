@@ -5,27 +5,31 @@ buildscript {
     dependencies {
         classpath files(
             'semlangLib/antlr-parser.jar',
-            'semlangLib/kotlin-api.jar',
-            'semlangLib/kotlin-parser.jar',
+            'semlangLib/semlang-api.jar',
+            'semlangLib/semlang-parser.jar',
         )
+        classpath "org.jetbrains.kotlin:kotlin-stdlib:1.2.40"
+        classpath "com.fasterxml.jackson.core:jackson-databind:2.8.8"
         classpath "org.antlr:antlr4:4.5"
     }
 }
 
-import net.semlang.parser.ParserKt
 import net.semlang.parser.ValidatorKt
-import net.semlang.api.ModuleId
+import net.semlang.parser.ValidationResult
+import net.semlang.api.NativeFunctionsKt
 
 task validate {
     doLast {
-        System.out.println("About to run the parser")
-        def files = files('src/main/sem1/delimiters.sem').asList()
-        def context = ParserKt.parseFiles(files)
-        System.out.println("About to run the validator")
-        def moduleId = new ModuleId("net.alloyggp", "escape-rope", "dev")
-        def nativeModuleVersion = "0"
-        def upstreamModules = []
-        ValidatorKt.validateModule(context, moduleId, nativeModuleVersion, upstreamModules)
+        System.out.println("About to run the parser and validator")
+        def sourceDir = file('src/main/sem1')
+
+        def nativeModuleVersion = NativeFunctionsKt.CURRENT_NATIVE_MODULE_VERSION
+        ValidationResult result = ValidatorKt.parseAndValidateModuleDirectory(sourceDir, nativeModuleVersion)
+
+        if (result instanceof ValidationResult.Failure) {
+            throw new GradleException("Validation failure: " + result.getAllIssues())
+        }
+
         System.out.println("Finished running the validator")
     }
 }
