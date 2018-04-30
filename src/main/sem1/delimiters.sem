@@ -1,9 +1,32 @@
+@Export
+interface Delimiter {
+  delimit(strings: List<Unicode.String>): Unicode.String
+  undelimit(delimited: Unicode.String): List<Unicode.String>
+}
 
+function getCsvDelimiter(): Delimiter {
+  let adapter = Delimiter.Adapter<Void>(Csv.delimit|(_), Csv.undelimit|(_))
+  Delimiter(nothing, adapter)
+}
 
-function delimitCsvStyle(strings: List<Unicode.String>): Unicode.String {
+function Csv.delimit(strings: List<Unicode.String>): Unicode.String {
+  let escapedStrings = List.map<Unicode.String, Unicode.String>(strings, Csv.escape|(_))
   Unicode.String.""
 }
 
-function undelimitCsvStyle(delimited: Unicode.String): List<Unicode.String> {
+function Csv.escape(input: Unicode.String): Unicode.String {
+  if (Boolean.or(String.contains(input, Unicode.String.","), String.contains(input, Unicode.String."\""))) {
+    let replaced = String.replaceAll(input, Unicode.String."\"", Unicode.String."\"\"")
+    String.join([
+      Unicode.String."\"",
+      replaced,
+      Unicode.String."\"",
+    ]<Unicode.String>)
+  } else {
+    input
+  }
+}
+
+function Csv.undelimit(delimited: Unicode.String): List<Unicode.String> {
   []<Unicode.String>
 }
