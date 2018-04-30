@@ -8,7 +8,7 @@ task validate {
         def files = files('src/main/sem1/delimiters.sem').asList()
         def context = ParserKt.parseFiles(files)
         System.out.println("About to run the validator")
-        def moduleId = new ModuleId("net.alloyggp", "escape-rope", "0")
+        def moduleId = new ModuleId("net.alloyggp", "escape-rope", "dev")
         def nativeModuleVersion = "0"
         def upstreamModules = []
         ValidatorKt.validateModule(context, moduleId, nativeModuleVersion, upstreamModules)
